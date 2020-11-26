@@ -28,12 +28,12 @@ pixels are 1. If yes, then it is a blob!
 Looks for BLOB_AREA_SZ number of neighboring pixels which are 1
 within BLOB_WINDOW(3) x BLOB_WINDOW(3)(\\)
     Sample bin_matrix
-    0   0   0   0   \0   \0   \0   0
-    0   0   0   0   \0   \1   \1   0
-    0   0   0   0   \0   \1   \1   0
-    0   0   0   0   0   0   0   0
-    0   0   0   0   0   0   0   0
-    0   0   0   0   0   0   0   0
+    0   0   0   0   \0   \0   \0   0    \
+    0   0   0   0   \0   \1   \1   0    \
+    0   0   0   0   \0   \1   \1   0    \
+    0   0   0   0   0   0   0   0       \
+    0   0   0   0   0   0   0   0       \
+    0   0   0   0   0   0   0   0       \
 
 ## To Program
 1. Connect 5V
