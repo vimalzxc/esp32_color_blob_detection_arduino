@@ -353,6 +353,8 @@ bool detect_color(camera_fb_t *fb){
     }
 
     process_bin_matrix(bin_matrix);
+    dl_matrix3du_free(image_matrix);
+    dl_matrix3du_free(pool_matrix);
     return true;
     
 
@@ -479,6 +481,10 @@ static esp_err_t stream_handler(httpd_req_t *req){
             fr_encode = fr_start;
             fr_recognize = fr_start;
             if(!detection_enabled || fb->width > 400){
+                if(!detect_color(fb)){        
+                    httpd_resp_send_500(req);
+                    return ESP_FAIL;
+                }
                 if(fb->format != PIXFORMAT_JPEG){
                     bool jpeg_converted = frame2jpg(fb, 80, &_jpg_buf, &_jpg_buf_len);
                     esp_camera_fb_return(fb);
@@ -491,53 +497,8 @@ static esp_err_t stream_handler(httpd_req_t *req){
                     _jpg_buf_len = fb->len;
                     _jpg_buf = fb->buf;
                 }
-            } else {
-
-                image_matrix = dl_matrix3du_alloc(1, fb->width, fb->height, 3);
-
-                if (!image_matrix) {
-                    Serial.println("dl_matrix3du_alloc failed");
-                    res = ESP_FAIL;
-                } else {
-                    if(!fmt2rgb888(fb->buf, fb->len, fb->format, image_matrix->item)){
-                        Serial.println("fmt2rgb888 failed");
-                        res = ESP_FAIL;
-                    } else {
-                        fr_ready = esp_timer_get_time();
-                        box_array_t *net_boxes = NULL;
-                        if(detection_enabled){
-                            net_boxes = face_detect(image_matrix, &mtmn_config);
-                        }
-                        fr_face = esp_timer_get_time();
-                        fr_recognize = fr_face;
-                        if (net_boxes || fb->format != PIXFORMAT_JPEG){
-                            if(net_boxes){
-                                detected = true;
-                                if(recognition_enabled){
-                                    face_id = run_face_recognition(image_matrix, net_boxes);
-                                }
-                                fr_recognize = esp_timer_get_time();
-                                draw_face_boxes(image_matrix, net_boxes, face_id);
-                                free(net_boxes->score);
-                                free(net_boxes->box);
-                                free(net_boxes->landmark);
-                                free(net_boxes);
-                            }
-                            if(!fmt2jpg(image_matrix->item, fb->width*fb->height*3, fb->width, fb->height, PIXFORMAT_RGB888, 90, &_jpg_buf, &_jpg_buf_len)){
-                                Serial.println("fmt2jpg failed");
-                                res = ESP_FAIL;
-                            }
-                            esp_camera_fb_return(fb);
-                            fb = NULL;
-                        } else {
-                            _jpg_buf = fb->buf;
-                            _jpg_buf_len = fb->len;
-                        }
-                        fr_encode = esp_timer_get_time();
-                    }
-                    dl_matrix3du_free(image_matrix);
-                }
-            }
+            } 
+            
         }
         if(res == ESP_OK){
             size_t hlen = snprintf((char *)part_buf, 64, _STREAM_PART, _jpg_buf_len);
