@@ -1,3 +1,8 @@
+## Install ESP32 dev kit for arduino
+1. https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
+
+2. Download zip from here git@github.com:vimalzxc/esp32_color_blob_detection_arduino.git
+
 ## Quick start
 1. Set ssid and password in CameraWebServer_wifi.ion
 2. Open http://10.0.0.69/
