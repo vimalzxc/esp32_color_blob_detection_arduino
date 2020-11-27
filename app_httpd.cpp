@@ -223,7 +223,7 @@ static size_t jpg_encode_stream(void * arg, size_t index, const void* data, size
 #define WINDOW_X_LEN    WIDTH/WINDOW_SZ        //8
 #define WINDOW_Y_LEN    HEIGHT/WINDOW_SZ       //6
 
-#define THRES_MIN_R     90   
+#define THRES_MIN_R     90   //255
 #define THRES_MAX_R     240
 #define THRES_MIN_G     0
 #define THRES_MAX_G     100

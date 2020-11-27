@@ -1,10 +1,11 @@
 ## Quick start
-1. Open http://10.0.0.69/
-2. Set Resolution to QQVGA 160x120. It does not work for other resolutions
-3. Click on start stream
-4. Open COM port at 115200 baud rate
-5. The example program is set to detect blobs that are RED in color
-6. Whenever a blob is detected, `Found blob!` gets printed on the serial terminal
+1. Set ssid and password in CameraWebServer_wifi.ion
+2. Open http://10.0.0.69/
+3. Set Resolution to QQVGA 160x120. It does not work for other resolutions
+4. Click on start stream
+5. Open COM port at 115200 baud rate
+6. The example program is set to detect blobs that are RED in color
+7. Whenever a blob is detected, `Found blob!` gets printed on the serial terminal
 
 ## Customization
 Change `THRES_MIN_R`, `THRES_MAX_R`,`THRES_MIN_G`, `THRES_MAX_G`,`THRES_MIN_B`, `THRES_MAX_B` for the required color
@@ -12,7 +13,7 @@ Right now, it is optimized for RED color detection. Although, we are finding RED
 other colors as well.\
 R [90, 240]\
 G [0, 100]\
-B [0, 100]\
+B [0, 100]
 
 If you want to find a bigger blob, increase BLOB_AREA_SZ \
 BLOB_AREA_SZ can have a max value of BLOB_WINDOW*BLOB_WINDOW
@@ -48,3 +49,6 @@ within BLOB_WINDOW(3) x BLOB_WINDOW(3)(\\)\
 ## SSH quick links
 ssh-agent /bin/bash\
 ssh-add /c/Users/vchandran/.ssh/id_rsa.pub
+
+## Pixel Viewer
+https://yangcha.github.io/iview/iview.html
